@@ -4,10 +4,13 @@ import solidHeart from './icons/heart-solid.svg'
 import outlineHeart from './icons/heart-outline.svg'
 
 const DisplayBeings = (props) => {
-
+  
   const addToFavorites = (favObj) => {
-    let userFavs = JSON.stringify(favObj)
-    localStorage.setItem('userFavs', userFavs)
+    let tempFavs = [...props.userFavs]
+    tempFavs.push(favObj)
+    const newFavs = JSON.stringify(tempFavs)
+    localStorage.setItem('userFavs', newFavs)
+    props.getFavorites()
   }
 
   return (

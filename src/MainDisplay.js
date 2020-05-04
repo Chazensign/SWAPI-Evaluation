@@ -13,12 +13,20 @@ class MainDisplay extends Component {
       nextTen: '',
       previousTen: '',
       count: '',
-      userFavs: []
+      userFavs: [],
     }
   }
 
   componentDidMount = () => {
     this.getPeople()
+    this.getFavorites()
+  }
+
+  getFavorites = () => {
+    let savedFavs = JSON.parse(localStorage.getItem('userFavs'))
+    if (savedFavs) {
+      this.setState({ userFavs: savedFavs })
+    }
   }
 
   getPeople = (direct) => {
@@ -26,7 +34,6 @@ class MainDisplay extends Component {
     axios
       .get(!direct ? 'https://swapi.dev/api/people' : direct)
       .then((res) => {
-        console.log(res.data)
         const { next, previous, results } = res.data
         if (!direct) {
           this.setState({ count: `1-${results.length}` })
@@ -71,20 +78,24 @@ class MainDisplay extends Component {
   }
 
   render() {
-    console.log(this.props)
-    
-    const { userFavs, count } = this.state
+    const { userFavs } = this.state
     return (
       <Switch>
         <Route exact path='/'>
-      <PeopleSearch 
-      getPeople={this.getPeople}
-      handleChange={this.handleChange} 
-      getFiltered={this.getFiltered} 
-      state={this.state}/>
+          <PeopleSearch
+            getFavorites={this.getFavorites}
+            getPeople={this.getPeople}
+            handleChange={this.handleChange}
+            getFiltered={this.getFiltered}
+            state={this.state}
+          />
         </Route>
         <Route path='/favorites'>
-          <UserFavorites userFavs={userFavs} history={this.props.history}/>
+          <UserFavorites
+            getFavorites={this.getFavorites}
+            userFavs={userFavs}
+            history={this.props.history}
+          />
         </Route>
       </Switch>
     )

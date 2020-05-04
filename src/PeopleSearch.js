@@ -7,7 +7,7 @@ import CountDisplay from './CountDisplay'
 
 const PeopleSearch = (props) => {
 
-const { people, loading, nextTen, previousTen, count } = props.state
+const { people, loading, nextTen, previousTen, count, userFavs } = props.state
 
   return (
     <PeopleStyle>
@@ -27,7 +27,11 @@ const { people, loading, nextTen, previousTen, count } = props.state
       {loading ? (
         <h2>Loading...</h2>
       ) : (
-          <DisplayBeings people={people}/>
+        <DisplayBeings
+          getFavorites={props.getFavorites}
+          people={people}
+          userFavs={userFavs}
+        />
       )}
       <AppButton
         name='next'
