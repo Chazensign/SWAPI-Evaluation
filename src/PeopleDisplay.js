@@ -20,7 +20,6 @@ class PeopleDisplay extends Component {
   }
 
   getPeople = (direct) => {
-    
     this.setState({ loading: true })
     axios
       .get(!direct ? 'https://swapi.dev/api/people' : direct)
@@ -53,26 +52,52 @@ class PeopleDisplay extends Component {
     }
   }
 
+  handleChange = (trg) => {
+    this.setState({ [trg.name]: trg.value })
+  }
+
+  getFiltered = (e) => {
+    this.setState({ loading: true })
+    e.preventDefault()
+    axios
+      .get(`https://swapi.dev/api/people/?search=${this.state.searchTerm}`)
+      .then((res) => {
+        const { next, previous, results } = res.data
+        this.getPlanetName(results)
+        this.setState({ nextTen: next, previousTen: previous })
+      })
+  }
+
   render() {
     const { people, loading, nextTen, previousTen, count } = this.state
     return (
       <PeopleStyle>
+        <div className='search-cont'>
+          <form>
+            <input
+              type='text'
+              name='searchTerm'
+              onChange={(e) => this.handleChange(e.target)}
+            />
+            <AppButton fn={this.getFiltered} title='Search' />
+          </form>
+        </div>
         {loading ? (
           <h2>Loading...</h2>
         ) : (
           <>
-          <ul>
-            {people.map((being, i) => {
-              return (
-                <li key={i}>
-                  <h4>{being.name}</h4>
-                  <h6>Birth: {being.birth_year}</h6>
-                  <h6>Homeworld: {being.planet_name}</h6>
-                </li>
-              )
-            })}
-          </ul>
-          <h6>{count}</h6>
+            <ul>
+              {people.map((being, i) => {
+                return (
+                  <li key={i}>
+                    <h4>{being.name}</h4>
+                    <h6>Birth: {being.birth_year}</h6>
+                    <h6>Homeworld: {being.planet_name}</h6>
+                  </li>
+                )
+              })}
+            </ul>
+            <h6>{count}</h6>
           </>
         )}
         <AppButton
@@ -96,13 +121,13 @@ export default PeopleDisplay
 
 const PeopleStyle = styled.section`
   width: 450px;
-  height: 80%;
+  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   margin-left: 60px;
+  padding-top: 10px;
   ul {
     overflow: scroll;
   }
@@ -131,5 +156,15 @@ const PeopleStyle = styled.section`
     top: 50%;
     left: 0;
     transform: translate(-50%, 0);
+  }
+  input {
+    height: 20px;
+    width: 200px;
+    margin: 10px;
+    padding-left: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    background: darkgray;
+    border: 2px solid yellow;
   }
 `
