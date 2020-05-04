@@ -19,9 +19,21 @@ class PeopleDisplay extends Component {
     axios
       .get(!direct ? 'https://swapi.dev/api/people' : direct)
       .then((res) => {
-        this.setState({ people: res.data.results })
+        this.getPlanetName(res.data.results)
       })
       .catch((err) => console.log(err))
+  }
+
+  getPlanetName = async (arr) => {
+    let beingArr = []
+    arr.forEach((person) => {
+      axios.get(person.homeworld).then((res) => {
+        person.planet_name = res.data.name
+        beingArr.push(person)
+      })
+    })
+    console.log(beingArr)
+    this.setState({ people: beingArr })
   }
 
   render() {
@@ -29,25 +41,25 @@ class PeopleDisplay extends Component {
     return (
       <PeopleStyle>
         <ul>
-        {people.map((being, i) => {
-          return (
-            <li key={i}>
-              <h4>{being.name}</h4>
-              <h6>Birth: {being.birth_year}</h6>
-              {/* <h6>Homeworld: {being.planet_name}</h6> */}
-            </li>
-          )
-        })}
+          {people.map((being, i) => {
+            return (
+              <li key={i}>
+                <h4>{being.name}</h4>
+                <h6>Birth: {being.birth_year}</h6>
+                <h6>Homeworld: {being.planet_name}</h6>
+              </li>
+            )
+          })}
         </ul>
       </PeopleStyle>
     )
   }
 }
- 
+
 export default PeopleDisplay
 
 const PeopleStyle = styled.section`
-li {
-list-style: none;
-}
+  li {
+    list-style: none;
+  }
 `
