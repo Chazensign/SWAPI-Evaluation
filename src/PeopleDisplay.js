@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
+import AppButton from './AppButton'
 
 class PeopleDisplay extends Component {
   constructor(props) {
@@ -8,6 +9,9 @@ class PeopleDisplay extends Component {
     this.state = {
       people: [],
       loading: false,
+      nextTen: '',
+      previousTen: '',
+      count: '',
     }
   }
 
@@ -15,12 +19,22 @@ class PeopleDisplay extends Component {
     this.getPeople()
   }
 
-  getPeople = () => {
+  getPeople = (direct) => {
+    
     this.setState({ loading: true })
     axios
-      .get('https://swapi.dev/api/people')
+      .get(!direct ? 'https://swapi.dev/api/people' : direct)
       .then((res) => {
-        this.getPlanetName(res.data.results)
+        console.log(res.data)
+        const { next, previous, results } = res.data
+        if (!direct) {
+          this.setState({ count: '1-10' })
+        } else {
+          let num = (direct.charAt(direct.length - 1) - 1) * 10
+          this.setState({ count: `${num + 1}-${num + results.length}` })
+        }
+        this.getPlanetName(results)
+        this.setState({ nextTen: next, previousTen: previous })
       })
       .catch((err) => console.log(err))
   }
@@ -40,12 +54,13 @@ class PeopleDisplay extends Component {
   }
 
   render() {
-    const { people, loading } = this.state
+    const { people, loading, nextTen, previousTen, count } = this.state
     return (
       <PeopleStyle>
         {loading ? (
           <h2>Loading...</h2>
         ) : (
+          <>
           <ul>
             {people.map((being, i) => {
               return (
@@ -57,7 +72,21 @@ class PeopleDisplay extends Component {
               )
             })}
           </ul>
+          <h6>{count}</h6>
+          </>
         )}
+        <AppButton
+          name='next'
+          disabled={!nextTen}
+          title='Next'
+          fn={() => this.getPeople(nextTen)}
+        />
+        <AppButton
+          name='prev'
+          disabled={!previousTen}
+          title='Previous'
+          fn={() => this.getPeople(previousTen)}
+        />
       </PeopleStyle>
     )
   }
@@ -67,7 +96,7 @@ export default PeopleDisplay
 
 const PeopleStyle = styled.section`
   width: 450px;
-  max-height: 80%;
+  height: 80%;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -90,5 +119,17 @@ const PeopleStyle = styled.section`
     h6 {
       margin: 5px;
     }
+  }
+  .next {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(50%, 0);
+  }
+  .prev {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, 0);
   }
 `
