@@ -7,6 +7,7 @@ class PeopleDisplay extends Component {
     super(props)
     this.state = {
       people: [],
+      loading: false
     }
   }
 
@@ -19,7 +20,8 @@ class PeopleDisplay extends Component {
     axios
       .get(!direct ? 'https://swapi.dev/api/people' : direct)
       .then((res) => {
-        this.getPlanetName(res.data.results)
+        // this.getPlanetName(res.data.results)
+        this.setState({ people: res.data.results })
       })
       .catch((err) => console.log(err))
   }
@@ -59,7 +61,29 @@ class PeopleDisplay extends Component {
 export default PeopleDisplay
 
 const PeopleStyle = styled.section`
+  width: 450px;
+  max-height: 80%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 60px;
+  ul {
+    overflow: scroll;
+  }
   li {
+    background: rgba(70, 70, 70, 0.47);
+    padding: 5px;
+    border-radius: 8px;
     list-style: none;
+    margin: 10px;
+    position: relative;
+    h4 {
+      margin: 5px;
+    }
+    h6 {
+      margin: 5px;
+    }
   }
 `
