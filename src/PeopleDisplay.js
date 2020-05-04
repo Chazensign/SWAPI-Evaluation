@@ -7,7 +7,7 @@ class PeopleDisplay extends Component {
     super(props)
     this.state = {
       people: [],
-      loading: false
+      loading: false,
     }
   }
 
@@ -15,44 +15,49 @@ class PeopleDisplay extends Component {
     this.getPeople()
   }
 
-  getPeople = (direct) => {
+  getPeople = () => {
     this.setState({ loading: true })
     axios
-      .get(!direct ? 'https://swapi.dev/api/people' : direct)
+      .get('https://swapi.dev/api/people')
       .then((res) => {
-        // this.getPlanetName(res.data.results)
-        this.setState({ people: res.data.results })
+        this.getPlanetName(res.data.results)
       })
       .catch((err) => console.log(err))
   }
+  // The planet name is not included with the people get request.
+  // Was it with the old swapi.co?  It was more of a challenge this way.
 
   getPlanetName = async (arr) => {
     let beingArr = []
-    arr.forEach((person) => {
-      axios.get(person.homeworld).then((res) => {
-        person.planet_name = res.data.name
-        beingArr.push(person)
-      })
-    })
-    console.log(beingArr)
-    this.setState({ people: beingArr })
+    for (let i = 0; i < arr.length; i++) {
+      let res = await axios.get(arr[i].homeworld)
+      arr[i].planet_name = res.data.name
+      beingArr.push(arr[i])
+      if (i === arr.length - 1) {
+        this.setState({ people: beingArr, loading: false })
+      }
+    }
   }
 
   render() {
-    const { people } = this.state
+    const { people, loading } = this.state
     return (
       <PeopleStyle>
-        <ul>
-          {people.map((being, i) => {
-            return (
-              <li key={i}>
-                <h4>{being.name}</h4>
-                <h6>Birth: {being.birth_year}</h6>
-                <h6>Homeworld: {being.planet_name}</h6>
-              </li>
-            )
-          })}
-        </ul>
+        {loading ? (
+          <h2>Loading...</h2>
+        ) : (
+          <ul>
+            {people.map((being, i) => {
+              return (
+                <li key={i}>
+                  <h4>{being.name}</h4>
+                  <h6>Birth: {being.birth_year}</h6>
+                  <h6>Homeworld: {being.planet_name}</h6>
+                </li>
+              )
+            })}
+          </ul>
+        )}
       </PeopleStyle>
     )
   }
