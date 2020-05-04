@@ -1,9 +1,9 @@
 import React from 'react'
 
-const UserFavorites = () => {
+const UserFavorites = (props) => {
   return ( 
     <section>
-      
+
     </section>
    )
 }

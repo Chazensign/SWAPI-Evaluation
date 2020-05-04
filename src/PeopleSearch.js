@@ -1,55 +1,58 @@
 import React from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import AppButton from './AppButton'
 
 const PeopleSearch = (props) => {
 
-const { people, loading, nextTen, previousTen, count } = props.state
+const { people, loading, nextTen, previousTen } = props.state
 
   return (
-      <PeopleStyle>
-        <div className='search-cont'>
-          <form>
-            <input
-              type='text'
-              name='searchTerm'
-              onChange={(e) => props.handleChange(e.target)}
-            />
-            <AppButton fn={props.getFiltered} title='Search' />
-          </form>
-        </div>
-        {loading ? (
-          <h2>Loading...</h2>
-        ) : (
-          <>
-            <ul>
-              {people.map((being, i) => {
-                return (
-                  <li key={i}>
-                    <h4>{being.name}</h4>
-                    <h6>Birth: {being.birth_year}</h6>
-                    <h6>Homeworld: {being.planet_name}</h6>
-                  </li>
-                )
-              })}
-            </ul>
-            <h6>{count}</h6>
-          </>
-        )}
-        <AppButton
-          name='next'
-          disabled={!nextTen}
-          title='Next'
-          fn={() => props.getPeople(nextTen)}
-        />
-        <AppButton
-          name='prev'
-          disabled={!previousTen}
-          title='Previous'
-          fn={() => props.getPeople(previousTen)}
-        />
-      </PeopleStyle>
-    )
+    <PeopleStyle>
+      <div className='search-cont'>
+        <form>
+          <input
+            type='text'
+            name='searchTerm'
+            onChange={(e) => props.handleChange(e.target)}
+          />
+          <AppButton fn={props.getFiltered} title='Search' />
+        </form>
+      </div>
+      <Link to='/favorites' className='fav-disp'>
+        <h2>My Favs: 0</h2>
+      </Link>
+      {loading ? (
+        <h2>Loading...</h2>
+      ) : (
+        <>
+          <ul>
+            {people.map((being, i) => {
+              return (
+                <li key={i}>
+                  <h4>{being.name}</h4>
+                  <h6>Birth: {being.birth_year}</h6>
+                  <h6>Homeworld: {being.planet_name}</h6>
+                </li>
+              )
+            })}
+          </ul>
+        </>
+      )}
+      <AppButton
+        name='next'
+        disabled={!nextTen}
+        title='Next'
+        fn={() => props.getPeople(nextTen)}
+      />
+      <AppButton
+        name='prev'
+        disabled={!previousTen}
+        title='Previous'
+        fn={() => props.getPeople(previousTen)}
+      />
+    </PeopleStyle>
+  )
   }
 
 export default PeopleSearch
@@ -101,5 +104,15 @@ const PeopleStyle = styled.section`
     font-weight: 600;
     background: darkgray;
     border: 2px solid yellow;
+  }
+  .fav-disp {
+    position: absolute;
+    top: 0px;
+    right: -200px;
+    color: yellow;
+    text-decoration: none;
+  }
+  .fav-disp:hover {
+    cursor: pointer;
   }
 `

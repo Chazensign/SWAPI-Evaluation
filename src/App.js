@@ -1,13 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import MainDisplay from './MainDisplay'
+import { HashRouter } from 'react-router-dom'
 
 function App() {
 
   return (
+    <HashRouter>
     <AppStyle>
       <MainDisplay />
     </AppStyle>
+    </HashRouter>
   )
 }
 

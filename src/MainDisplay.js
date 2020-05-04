@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { Switch, Route } from 'react-router-dom'
 import PeopleSearch from './PeopleSearch'
+import UserFavorites from './UserFavorites'
 
 class MainDisplay extends Component {
   constructor(props) {
@@ -26,7 +28,7 @@ class MainDisplay extends Component {
         console.log(res.data)
         const { next, previous, results } = res.data
         if (!direct) {
-          this.setState({ count: '1-10' })
+          this.setState({ count: `1-${results.length}` })
         } else {
           let num = (direct.charAt(direct.length - 1) - 1) * 10
           this.setState({ count: `${num + 1}-${num + results.length}` })
@@ -70,11 +72,21 @@ class MainDisplay extends Component {
   render() {
     
     return (
+      <>
+      <Switch>
+        <Route exact path='/'>
       <PeopleSearch 
       getPeople={this.getPeople}
       handleChange={this.handleChange} 
       getFiltered={this.getFiltered} 
       state={this.state}/>
+        </Route>
+        <Route path='/favorites'>
+          <UserFavorites />
+        </Route>
+      </Switch>
+      <h6>{this.state.count}</h6>
+      </>
     )
   }
 }
