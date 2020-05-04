@@ -1,12 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
-import PeopleDisplay from './PeopleDisplay'
+import MainDisplay from './MainDisplay'
 
 function App() {
 
   return (
     <AppStyle>
-      <PeopleDisplay />
+      <MainDisplay />
     </AppStyle>
   )
 }
