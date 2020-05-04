@@ -1,7 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
+import solidHeart from './icons/heart-solid.svg'
+import outlineHeart from './icons/heart-outline.svg'
 
 const DisplayBeings = (props) => {
+
+  const addToFavorites = (favObj) => {
+    let userFavs = JSON.stringify(favObj)
+    localStorage.setItem('userFavs', userFavs)
+  }
 
   return (
     <ListStyle>
@@ -11,6 +18,12 @@ const DisplayBeings = (props) => {
             <h4>{being.name}</h4>
             <h6>Birth: {being.birth_year}</h6>
             <h6>Homeworld: {being.planet_name}</h6>
+            <img
+              className='heart'
+              src={solidHeart}
+              alt='favorite'
+              onClick={() => addToFavorites(being)}
+            />
           </li>
         )
       })}

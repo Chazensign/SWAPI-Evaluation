@@ -75,7 +75,6 @@ class MainDisplay extends Component {
     
     const { userFavs, count } = this.state
     return (
-      <>
       <Switch>
         <Route exact path='/'>
       <PeopleSearch 
@@ -88,8 +87,6 @@ class MainDisplay extends Component {
           <UserFavorites userFavs={userFavs} history={this.props.history}/>
         </Route>
       </Switch>
-    {/* {this.props.location.pathname === '/' ? <CountStyle>{count}</CountStyle> : userFavs.length > 0 && <CountStyle>{`1-${this.state.userFavs.length}`}</CountStyle>} */}
-      </>
     )
   }
 }
