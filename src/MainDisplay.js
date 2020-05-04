@@ -13,6 +13,7 @@ class MainDisplay extends Component {
       nextTen: '',
       previousTen: '',
       count: '',
+      userFavs: []
     }
   }
 
@@ -70,7 +71,9 @@ class MainDisplay extends Component {
   }
 
   render() {
+    console.log(this.props)
     
+    const { userFavs, count } = this.state
     return (
       <>
       <Switch>
@@ -82,12 +85,14 @@ class MainDisplay extends Component {
       state={this.state}/>
         </Route>
         <Route path='/favorites'>
-          <UserFavorites />
+          <UserFavorites userFavs={userFavs} history={this.props.history}/>
         </Route>
       </Switch>
-      <h6>{this.state.count}</h6>
+    {/* {this.props.location.pathname === '/' ? <CountStyle>{count}</CountStyle> : userFavs.length > 0 && <CountStyle>{`1-${this.state.userFavs.length}`}</CountStyle>} */}
       </>
     )
   }
 }
 export default MainDisplay
+
+

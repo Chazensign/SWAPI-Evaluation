@@ -2,10 +2,12 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import AppButton from './AppButton'
+import DisplayBeings from './DisplayBeings'
+import CountDisplay from './CountDisplay'
 
 const PeopleSearch = (props) => {
 
-const { people, loading, nextTen, previousTen } = props.state
+const { people, loading, nextTen, previousTen, count } = props.state
 
   return (
     <PeopleStyle>
@@ -25,19 +27,7 @@ const { people, loading, nextTen, previousTen } = props.state
       {loading ? (
         <h2>Loading...</h2>
       ) : (
-        <>
-          <ul>
-            {people.map((being, i) => {
-              return (
-                <li key={i}>
-                  <h4>{being.name}</h4>
-                  <h6>Birth: {being.birth_year}</h6>
-                  <h6>Homeworld: {being.planet_name}</h6>
-                </li>
-              )
-            })}
-          </ul>
-        </>
+          <DisplayBeings people={people}/>
       )}
       <AppButton
         name='next'
@@ -51,6 +41,7 @@ const { people, loading, nextTen, previousTen } = props.state
         title='Previous'
         fn={() => props.getPeople(previousTen)}
       />
+      <CountDisplay count={count} />
     </PeopleStyle>
   )
   }
