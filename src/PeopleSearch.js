@@ -22,7 +22,7 @@ const { people, loading, nextTen, previousTen, count, userFavs } = props.state
         </form>
       </div>
       <Link to='/favorites' className='fav-disp'>
-        <h2>My Favs: 0</h2>
+  <h2>My Favs: {userFavs.length}</h2>
       </Link>
       {loading ? (
         <h2>Loading...</h2>

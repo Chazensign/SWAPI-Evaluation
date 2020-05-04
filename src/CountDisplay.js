@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const CountDisplay = (props) => {
   return ( 
-    props.location.pathname === '/' ? <CountStyle>{props.count}</CountStyle> : props.userFavs.length > 0 && <CountStyle>{`1-${this.state.userFavs.length}`}</CountStyle>
+    props.location.pathname === '/' ? <CountStyle>{props.count}</CountStyle> : props.userFavs.length > 0 && <CountStyle>{`1-${props.userFavs.length}`}</CountStyle>
    )
 }
  

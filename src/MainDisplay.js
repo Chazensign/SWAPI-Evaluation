@@ -25,6 +25,7 @@ class MainDisplay extends Component {
   getFavorites = () => {
     let savedFavs = JSON.parse(localStorage.getItem('userFavs'))
     if (savedFavs) {
+
       this.setState({ userFavs: savedFavs })
     }
   }
