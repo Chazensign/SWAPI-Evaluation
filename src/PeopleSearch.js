@@ -103,7 +103,7 @@ const PeopleStyle = styled.section`
   .fav-disp {
     position: absolute;
     top: 0px;
-    right: -200px;
+    right: -100px;
     color: yellow;
     text-decoration: none;
   }

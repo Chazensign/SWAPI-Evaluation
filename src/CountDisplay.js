@@ -11,8 +11,8 @@ const CountDisplay = (props) => {
 export default withRouter(CountDisplay)
 
 const CountStyle = styled.h5`
-  position: absolute;
+  /* position: absolute;
   bottom: 20px;
   left: 50%;
-  transform: translate(-50%)
+  transform: translate(-50%) */
 `
